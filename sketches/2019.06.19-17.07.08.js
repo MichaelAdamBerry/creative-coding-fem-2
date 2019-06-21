@@ -23,19 +23,21 @@ const sketch = () => {
   const points = createGrid();
   const backgroundColor = "white";
   const palette = random.pick(palettes);
+  console.log(palette);
   const margin = 400;
   return ({ context, width, height }) => {
     context.fillStyle = backgroundColor;
     context.fillRect(0, 0, width, height);
     // make 6X6 grid points
-    points.forEach(([u, v]) => {
-      const x = lerp(margin, width - margin, u);
-      const y = lerp(margin, width - margin, v);
-      context.fillStyle = "black";
-      context.beginPath();
-      context.arc(x, y, 15, 0, Math.PI * 2);
-      context.fill();
-    });
+    // ! grid points are made but circles are not made/displayed
+    // points.forEach(([u, v]) => {
+    //   const x = lerp(margin, width - margin, u);
+    //   const y = lerp(margin, width - margin, v);
+    //   context.fillStyle = "black";
+    //   context.beginPath();
+    //   context.arc(x, y, 15, 0, Math.PI * 2);
+    //   context.fill();
+    // });
 
     //filter out bottom row of points
     const pointsCpy = points.filter(([x, y]) => {
@@ -59,21 +61,26 @@ const sketch = () => {
     const drawTrap = (start, end) => {
       context.strokeStyle = backgroundColor;
       context.lineWidth = 10;
-      context.fillStyle = random.pick(palette);
+
       let a = start;
       let b = end;
       let d = [start[0], 1];
       let c = [end[0], 1];
+      context.save();
       context.moveTo(i(a[0]), i(a[1]));
       context.lineTo(i(b[0]), i(b[1]));
       context.lineTo(i(c[0]), i(c[1]));
       context.lineTo(i(d[0]), i(d[1]));
       context.lineTo(i(a[0]), i(a[1]));
+      context.globalAlpha = 0.7;
       context.fill();
       context.stroke();
+      context.restore();
     };
 
     while (pointsCpy.length > 0) {
+      let currentFill = random.pick(palette);
+      context.fillStyle = currentFill;
       let pointA = getPoints();
       let pointB = getPoints();
       drawTrap(pointA, pointB);
