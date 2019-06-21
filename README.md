@@ -13,3 +13,5 @@ RULES:
 
 - Layer the shapes by average Y position of theier grid points
 
+
+![example of result](/canvas-wall-art.png)
